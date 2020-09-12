@@ -1,3 +1,4 @@
+import 'package:check_it/database_helper.dart';
 import 'package:check_it/screens/taskpage.dart';
 import 'package:check_it/widgets.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  DatabaseHelper _dbHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,43 +36,57 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                   Expanded(
-                    child: ListView(
-                      children: [
-                        TaskCardWidget(
-                          title: "Get Started!",
-                          desc:
-                              "Welcome to Check-It! Keep a track of all your daily task here. This is a default task that you can edit or delete to start using Check-It!",
-                        ),
-                        TaskCardWidget(),
-                        TaskCardWidget(),
-                        TaskCardWidget(),
-                      ],
+                    child: FutureBuilder(
+                      initialData: [],
+                      future: _dbHelper.getTasks(),
+                      builder: (context, snapshot) {
+                        return ScrollConfiguration(
+                          behavior: NoGlowBehaviour(),
+                          child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return TaskCardWidget(
+                                title: snapshot.data[index].title,
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
                   )
                 ],
               ),
               Positioned(
                 bottom: 20.0,
-                right: 0.0,
+                right: 20.0,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Taskpage(),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Taskpage(),
+                      ),
+                    ).then(
+                      (value) {
+                        setState(() {});
+                      },
+                    );
                   },
                   child: Container(
-                      width: 60.0,
-                      height: 60.0,
-                      decoration: BoxDecoration(
-                        color: Color(0XFF900C3F),
-                        borderRadius: BorderRadius.circular(55.0),
-                      ),
-                      child: Image(
-                        image: AssetImage("assets/images/plus.png"),
-                        height: 40.0,
-                      )),
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Color(0XFF900C3F), Color(0XFFFC9D9D)],
+                          begin: Alignment(0.0, -1.0),
+                          end: Alignment(0.0, 1.0)),
+                      borderRadius: BorderRadius.circular(55.0),
+                    ),
+                    child: Image(
+                      image: AssetImage("assets/images/plus.png"),
+                      height: 40.0,
+                    ),
+                  ),
                 ),
               )
             ],
