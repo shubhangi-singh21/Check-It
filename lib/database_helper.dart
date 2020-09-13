@@ -1,4 +1,5 @@
 import 'package:check_it/models/task.dart';
+import 'package:check_it/models/todo.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -30,6 +31,12 @@ class DatabaseHelper {
     return taskId;
   }
 
+  Future<void> insertTodo(Todo todo) async {
+    Database _db = await database();
+    await _db.insert('todo', todo.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
   Future<List<Task>> getTasks() async {
     Database _db = await database();
     List<Map<String, dynamic>> taskMap = await _db.query('tasks');
@@ -38,6 +45,19 @@ class DatabaseHelper {
           id: taskMap[index]['id'],
           title: taskMap[index]['title'],
           description: taskMap[index]['description']);
+    });
+  }
+
+  Future<List<Todo>> getTodo(int taskId) async {
+    Database _db = await database();
+    List<Map<String, dynamic>> todoMap =
+        await _db.rawQuery("SELECT * from WHERE taskId = $taskId");
+    return List.generate(todoMap.length, (index) {
+      return Todo(
+          id: todoMap[index]['id'],
+          title: todoMap[index]['title'],
+          taskId: todoMap[index]['taskId'],
+          isDone: todoMap[index]['isDong']);
     });
   }
 }

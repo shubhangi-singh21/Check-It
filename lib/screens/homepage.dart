@@ -10,6 +10,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   DatabaseHelper _dbHelper = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +46,19 @@ class _HomepageState extends State<Homepage> {
                           child: ListView.builder(
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
-                              return TaskCardWidget(
-                                title: snapshot.data[index].title,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Taskpage(
+                                              task: snapshot.data[index],
+                                            )),
+                                  );
+                                },
+                                child: TaskCardWidget(
+                                  title: snapshot.data[index].title,
+                                ),
                               );
                             },
                           ),
@@ -64,7 +76,9 @@ class _HomepageState extends State<Homepage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Taskpage(),
+                        builder: (context) => Taskpage(
+                          task: null,
+                        ),
                       ),
                     ).then(
                       (value) {
