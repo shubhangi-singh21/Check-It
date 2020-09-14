@@ -2,7 +2,6 @@ import 'package:check_it/database_helper.dart';
 import 'package:check_it/models/task.dart';
 import 'package:check_it/models/todo.dart';
 import 'package:check_it/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Taskpage extends StatefulWidget {
@@ -19,17 +18,40 @@ class _TaskpageState extends State<Taskpage> {
 
   int _taskId = 0;
   String _taskTitle = "";
+  String _taskDescription = "";
+
+  FocusNode _titleFocus;
+  FocusNode _descriptionFocus;
+  FocusNode _todoFocus;
+
+  bool _contentVisible = false;
 
   @override
   void initState() {
     if (widget.task != null) {
+      _contentVisible = true;
       _taskTitle = widget.task.title;
+      _taskDescription = widget.task.description;
       _taskId = widget.task.id;
     }
+
+    _titleFocus = FocusNode();
+    _descriptionFocus = FocusNode();
+    _todoFocus = FocusNode();
 
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _titleFocus.dispose();
+    _description.dispose();
+    _todoFocus.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -59,144 +81,191 @@ class _TaskpageState extends State<Taskpage> {
                           ),
                         ),
                         Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 12.0,
-                            ),
-                            child: TextField(
-                              onSubmitted: (value) async {
-                                //to check if the field is not empty
-                                if (value != "") {
-                                  //check if the task is null
-                                  if (widget.task == null) {
-                                    Task _newTask = Task(title: value); //Task
-
-                                    await _dbHelper.insertTask(_newTask);
-                                  } else {
-                                    print("Update the existing task");
-                                  }
+                          child: TextField(
+                            focusNode: _titleFocus,
+                            onSubmitted: (value) async {
+                              //to check if the field is not empty
+                              if (value != "") {
+                                //check if the task is null
+                                if (widget.task == null) {
+                                  Task _newTask = Task(title: value);
+                                  _taskId =
+                                  await _dbHelper.insertTask(_newTask);
+                                  setState(() {
+                                    _contentVisible = true;
+                                    _taskTitle = value;
+                                  });
+                                } else { //Task
+                                  await _dbHelper.updateTaskTitle(
+                                      _taskId, value);
+                                  print("Task Updated");
                                 }
-                              },
-                              controller: TextEditingController()
-                                ..text = _taskTitle,
-                              decoration: InputDecoration(
-                                  hintText: "Enter your task here!",
-                                  border: InputBorder.none),
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0XFF900C3F),
-                              ),
+                                _descriptionFocus.requestFocus();
+                              }
+                            },
+                            controller: TextEditingController()
+                              ..text = _taskTitle,
+                            decoration: InputDecoration(
+                                hintText: "Enter your task here!",
+                                border: InputBorder.none),
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0XFF900C3F),
                             ),
                           ),
                         )
                       ],
                     ),
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: "Enter the description for the task",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 24.0,
-                        )),
-                  ),
-                  FutureBuilder(
-                    initialData: [],
-                    future: _dbHelper.getTodo(_taskId),
-                    builder: (context, snapshot) {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                //switch the todo completion state
-                              },
-                              child: TodoWidget(
-                                text: snapshot.data[index].title,
-                                isDone: snapshot.data[index].isDone == 0
-                                    ? false
-                                    : true,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 20.0,
-                          height: 20.0,
-                          margin: EdgeInsets.only(
-                            right: 12.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: Image(
-                            height: 20.0,
-                            image: AssetImage('assets/images/tick.png'),
-                          ),
-                        ),
-                        Expanded(
-                            child: TextField(
-                          onSubmitted: (value) async {
-                            //to check if the field is not empty
-                            if (value != "") {
-                              //check if the todo is null
-                              if (widget.task != null) {
-                                DatabaseHelper _dbHelper = DatabaseHelper();
-                                Todo _newTodo = Todo(
-                                  title: value,
-                                  isDone: 0,
-                                  taskId: widget.task.id,
-                                );
-
-                                await _dbHelper.insertTodo(_newTodo);
-                                setState(() {});
-                              }
+                  Visibility(
+                    visible: _contentVisible,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 12.0,
+                      ),
+                      child: TextField(
+                        focusNode: _descriptionFocus,
+                        onSubmitted: (value) async {
+                          if (value != "") {
+                            if (_taskId != 0) {
+                              await _dbHelper.updateTaskDescription(
+                                  _taskId, value);
+                              _taskDescription = value;
                             }
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Enter todo item..",
-                            border: InputBorder.none,
+                          }
+                          _todoFocus.requestFocus();
+                        },
+                        controller: TextEditingController()
+                          ..text = _taskDescription,
+                        decoration: InputDecoration(
+                          hintText: "Enter the description for the task",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 24.0,
                           ),
-                        )),
-                      ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: _contentVisible,
+                    child: FutureBuilder(
+                      initialData: [],
+                      future: _dbHelper.getTodo(_taskId),
+                      builder: (context, snapshot) {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () async {
+                                  if (snapshot.data[index].isDone == 0) {
+                                    await _dbHelper
+                                  ,updateTodoDone(snapshot.data[index].id, 1);
+                                  }esle{
+                                  await _dbHelper.updateTodoDone(snapshot.data[index].id,0);
+                                  }
+                                  setState((){});
+                                },
+                                child: TodoWidget(
+                                  text: snapshot.data[index].title,
+                                  isDone: snapshot.data[index].isDone == 0
+                                      ? false
+                                      : true,
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _contentVisible,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 20.0,
+                            height: 20.0,
+                            margin: EdgeInsets.only(
+                              right: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Image(
+                              height: 20.0,
+                              image: AssetImage('assets/images/tick.png'),
+                            ),
+                          ),
+                          Expanded(
+                              child: TextField(
+                                focusNode: _todoFocus,
+                                controller: TextEditingController()
+                                  ..text = "",
+                                onSubmitted: (value) async {
+                                  //to check if the field is not empty
+                                  if (value != "") {
+                                    //check if the todo is null
+                                    if (_taskId != 0) {
+                                      DatabaseHelper _dbHelper = DatabaseHelper();
+                                      Todo _newTodo = Todo(
+                                        title: value,
+                                        isDone: 0,
+                                        taskId: _taskId,
+                                      );
+
+                                      await _dbHelper.insertTodo(_newTodo);
+                                      setState(() {});
+                                      _todoFocus.requestFocus();
+                                    } else {
+                                      print("task doesn't exist");
+                                    }
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Enter todo item..",
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
               ),
-              Positioned(
-                bottom: 20.0,
-                right: 20.0,
-                child: GestureDetector(
-                  onTap: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Taskpage(),
+              Visibility(
+                visible: _contentVisible,
+                child: Positioned(
+                  bottom: 20.0,
+                  right: 20.0,
+                  child: GestureDetector(
+                    onTap: () async{
+                      if(_taskId !=0){
+                        await _dbHelper.deleteTask(_taskId);
+                        Navigator.pop(context);
+                      }
+                      }
+  };
+                    child: Container(
+                        width: 30.0,
+                        height: 30.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(23.0),
+                        ),
+                        child: Image(
+                          image: AssetImage("assets/images/delete.png"),
+                          height: 5.0,
+                        ),
                       ),
-                    );
-                  },
-                  child: Container(
-                      width: 30.0,
-                      height: 30.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                      child: Image(
-                        image: AssetImage("assets/images/delete.png"),
-                        height: 5.0,
-                      )),
+                  ),
                 ),
               )
             ],

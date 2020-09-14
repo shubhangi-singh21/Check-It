@@ -70,16 +70,12 @@ class _HomepageState extends State<Homepage> {
               ),
               Positioned(
                 bottom: 20.0,
-                right: 20.0,
+                right: 0.0,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => Taskpage(
-                          task: null,
-                        ),
-                      ),
+                      MaterialPageRoute(builder: (context) => Taskpage()),
                     ).then(
                       (value) {
                         setState(() {});

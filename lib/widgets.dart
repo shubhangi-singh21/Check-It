@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TaskCardWidget extends StatelessWidget {
@@ -82,12 +81,14 @@ class TodoWidget extends StatelessWidget {
               image: AssetImage('assets/images/tick.png'),
             ),
           ),
-          Text(
-            text ?? "Add more tasks!",
-            style: TextStyle(
-                color: isDone ? Color(0XFF900C3F) : Color(0XFF868290),
-                fontSize: 16.0,
-                fontWeight: isDone ? FontWeight.bold : FontWeight.w500),
+          Flexible(
+            child: Text(
+              text ?? "Add more tasks!",
+              style: TextStyle(
+                  color: isDone ? Color(0XFF900C3F) : Color(0XFF868290),
+                  fontSize: 16.0,
+                  fontWeight: isDone ? FontWeight.bold : FontWeight.w500),
+            ),
           ),
         ],
       ),
