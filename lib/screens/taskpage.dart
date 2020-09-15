@@ -64,7 +64,7 @@ class _TaskpageState extends State<Taskpage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 24.0,
+                      top: 6.0,
                       bottom: 6.0,
                     ),
                     child: Row(
@@ -98,7 +98,6 @@ class _TaskpageState extends State<Taskpage> {
                                     _taskTitle = value;
                                   });
                                 } else {
-                                  //Task
                                   await _dbHelper.updateTaskTitle(
                                       _taskId, value);
                                   print("Task Updated");
@@ -258,7 +257,7 @@ class _TaskpageState extends State<Taskpage> {
                     },
                     child: Container(
                       width: 30.0,
-                      height: 30.0,
+                      height: 50.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(23.0),
                       ),

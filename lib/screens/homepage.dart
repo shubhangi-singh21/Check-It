@@ -55,9 +55,11 @@ class _HomepageState extends State<Homepage> {
                                         task: snapshot.data[index],
                                       ),
                                     ),
-                                  ).then((value) {
-                                    setState(() {});
-                                  });
+                                  ).then(
+                                    (value) {
+                                      setState(() {});
+                                    },
+                                  );
                                 },
                                 child: TaskCardWidget(
                                   title: snapshot.data[index].title,
@@ -79,12 +81,13 @@ class _HomepageState extends State<Homepage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Taskpage()),
-                    ).then(
-                      (value) {
-                        setState(() {});
-                      },
-                    );
+                      MaterialPageRoute(
+                          builder: (context) => Taskpage(
+                                task: null,
+                              )),
+                    ).then((value) {
+                      setState(() {});
+                    });
                   },
                   child: Container(
                     width: 60.0,
