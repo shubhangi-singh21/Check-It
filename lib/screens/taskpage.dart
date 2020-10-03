@@ -90,26 +90,21 @@ class _TaskpageState extends State<Taskpage> {
                                 //check if the task is null
                                 if (widget.task == null) {
                                   Task _newTask = Task(title: value);
-                                  _taskId =
-                                      await _dbHelper.insertTask(_newTask);
+                                  _taskId = await _dbHelper.insertTask(_newTask);
                                   print("New Task Id: $_taskId");
                                   setState(() {
                                     _contentVisible = true;
                                     _taskTitle = value;
                                   });
                                 } else {
-                                  await _dbHelper.updateTaskTitle(
-                                      _taskId, value);
+                                  await _dbHelper.updateTaskTitle(_taskId, value);
                                   print("Task Updated");
                                 }
                                 _descriptionFocus.requestFocus();
                               }
                             },
-                            controller: TextEditingController()
-                              ..text = _taskTitle,
-                            decoration: InputDecoration(
-                                hintText: "Enter your task here!",
-                                border: InputBorder.none),
+                            controller: TextEditingController()..text = _taskTitle,
+                            decoration: InputDecoration(hintText: "Enter your task here!", border: InputBorder.none),
                             style: TextStyle(
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold,
@@ -131,15 +126,13 @@ class _TaskpageState extends State<Taskpage> {
                         onSubmitted: (value) async {
                           if (value != "") {
                             if (_taskId != 0) {
-                              await _dbHelper.updateTaskDescription(
-                                  _taskId, value);
+                              await _dbHelper.updateTaskDescription(_taskId, value);
                               _taskDescription = value;
                             }
                           }
                           _todoFocus.requestFocus();
                         },
-                        controller: TextEditingController()
-                          ..text = _taskDescription,
+                        controller: TextEditingController()..text = _taskDescription,
                         decoration: InputDecoration(
                           hintText: "Enter the description for the task",
                           border: InputBorder.none,
@@ -158,24 +151,20 @@ class _TaskpageState extends State<Taskpage> {
                       builder: (context, snapshot) {
                         return Expanded(
                           child: ListView.builder(
-                            itemCount: snapshot.data.length,
+                            itemCount: snapshot?.data?.length ?? 0,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
                                   if (snapshot.data[index].isDone == 0) {
-                                    await _dbHelper.updateTodoDone(
-                                        snapshot.data[index].id, 1);
+                                    await _dbHelper.updateTodoDone(snapshot.data[index].id, 1);
                                   } else {
-                                    await _dbHelper.updateTodoDone(
-                                        snapshot.data[index].id, 0);
+                                    await _dbHelper.updateTodoDone(snapshot.data[index].id, 0);
                                   }
                                   setState(() {});
                                 },
                                 child: TodoWidget(
                                   text: snapshot.data[index].title,
-                                  isDone: snapshot.data[index].isDone == 0
-                                      ? false
-                                      : true,
+                                  isDone: snapshot.data[index].isDone == 0 ? false : true,
                                 ),
                               );
                             },
