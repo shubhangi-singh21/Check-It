@@ -1,7 +1,9 @@
 import 'package:check_it/database_helper.dart';
+import 'package:check_it/icons.dart';
 import 'package:check_it/screens/taskpage.dart';
 import 'package:check_it/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -31,10 +33,8 @@ class _HomepageState extends State<Homepage> {
                       top: 32.0,
                       bottom: 32.0,
                     ),
-                    child: Image(
-                      image: AssetImage('assets/images/logo.png'),
-                      height: 50.0,
-                    ),
+                    child: SvgPicture.asset('assets/images/svg/notepad.svg'),
+                    height: 50.0,
                   ),
                   Expanded(
                     child: FutureBuilder(
