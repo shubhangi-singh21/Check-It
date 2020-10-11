@@ -13,7 +13,7 @@ ____
 
 - [x] Checklist for small tasks under the main task
 
--[] Proper UI
+- [] Proper UI
 
 ____
 
