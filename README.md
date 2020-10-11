@@ -1,16 +1,21 @@
-# check_it
+# Check It ✅
 
-A new Flutter application.
+An application to keep your to-do list at one place💁‍♀️
 
-## Getting Started
+____
 
-This project is a starting point for a Flutter application.
+### Features:
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [x] Task Heading
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [x] Task Description
+
+- [x] Checklist for small tasks under the main task
+
+-[] Proper UI
+
+____
+
+
+
