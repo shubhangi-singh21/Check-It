@@ -75,7 +75,7 @@ class _HomepageState extends State<Homepage> {
                 ],
               ),
               Positioned(
-                bottom: 20.0,
+                bottom: 25.0,
                 right: 0.0,
                 child: GestureDetector(
                   onTap: () {
@@ -90,8 +90,8 @@ class _HomepageState extends State<Homepage> {
                     });
                   },
                   child: Container(
-                      width: 60.0,
-                      height: 60.0,
+                      width: 50.0,
+                      height: 50.0,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                             colors: [Color(0XFF900C3F), Color(0XFFFC9D9D)],
@@ -99,11 +99,7 @@ class _HomepageState extends State<Homepage> {
                             end: Alignment(0.0, 1.0)),
                         borderRadius: BorderRadius.circular(55.0),
                       ),
-                      child: Icon(
-                        Icons.add_circle,
-                        size: 40.0,
-                        color: Color(0X741137),
-                      )),
+                      child: Icon(Icons.add, size: 25.0, color: Colors.white)),
                 ),
               )
             ],
