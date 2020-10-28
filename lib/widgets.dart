@@ -67,20 +67,19 @@ class TodoWidget extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 20.0,
-            height: 20.0,
-            margin: EdgeInsets.only(
-              right: 12.0,
-            ),
-            decoration: BoxDecoration(
-              color: isDone ? Color(0XFFFC9D9D) : Colors.transparent,
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Image(
+              width: 20.0,
               height: 20.0,
-              image: AssetImage('assets/images/tick.png'),
-            ),
-          ),
+              margin: EdgeInsets.only(
+                right: 12.0,
+              ),
+              decoration: BoxDecoration(
+                color: isDone ? Color(0XFFFC9D9D) : Colors.transparent,
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Icon(
+                Icons.check_circle_outline,
+                size: 20.0,
+              )),
           Flexible(
             child: Text(
               text ?? "Add more tasks!",

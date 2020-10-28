@@ -90,20 +90,20 @@ class _HomepageState extends State<Homepage> {
                     });
                   },
                   child: Container(
-                    width: 60.0,
-                    height: 60.0,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0XFF900C3F), Color(0XFFFC9D9D)],
-                          begin: Alignment(0.0, -1.0),
-                          end: Alignment(0.0, 1.0)),
-                      borderRadius: BorderRadius.circular(55.0),
-                    ),
-                    child: Image(
-                      image: AssetImage("assets/images/plus.png"),
-                      height: 40.0,
-                    ),
-                  ),
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0XFF900C3F), Color(0XFFFC9D9D)],
+                            begin: Alignment(0.0, -1.0),
+                            end: Alignment(0.0, 1.0)),
+                        borderRadius: BorderRadius.circular(55.0),
+                      ),
+                      child: Icon(
+                        Icons.add_circle,
+                        size: 40.0,
+                        color: Color(0X741137),
+                      )),
                 ),
               )
             ],
