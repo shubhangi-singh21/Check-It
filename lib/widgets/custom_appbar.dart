@@ -15,7 +15,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.center,
           height: this.height,
           decoration: BoxDecoration(
-              color: Colors.indigo,
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0XFF900C3F),
+                    Color(0XFFFC9D9D)
+                  ],
+                  begin: Alignment(0.0, -1.0),
+                  end: Alignment(0.0, 1.0)),
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(100),
                   bottomRight: Radius.circular(100))),
