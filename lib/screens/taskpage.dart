@@ -1,7 +1,7 @@
 import 'package:check_it/database_helper.dart';
 import 'package:check_it/models/task.dart';
 import 'package:check_it/models/todo.dart';
-import 'package:check_it/widgets.dart';
+import 'package:check_it/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 
 class Taskpage extends StatefulWidget {
