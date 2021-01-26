@@ -11,7 +11,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: SafeArea(
         child: AnimatedContainer(
           duration: Duration(seconds: 1),
-          // color: Colors.indigo,
           alignment: Alignment.center,
           height: this.height,
           decoration: BoxDecoration(
