@@ -13,7 +13,7 @@ ____
 
 - [x] Checklist for small tasks under the main task
 
-- [WIP] Proper UI
+- [ ] Proper UI (WIP)
 
 ____
 
