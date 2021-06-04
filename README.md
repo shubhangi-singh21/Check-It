@@ -1,6 +1,6 @@
 # Check It ✅
 
-An application to keep your to-do list at one place💁‍♀️
+An application made using Flutter to keep your to-do list at one place💁‍♀️
 
 ____
 
@@ -13,7 +13,7 @@ ____
 
 - [x] Checklist for small tasks under the main task
 
-- [ ] Proper UI
+- [WIP] Proper UI
 
 ____
 
