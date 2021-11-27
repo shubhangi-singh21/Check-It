@@ -1,6 +1,6 @@
 # Check It ✅
 
-An application made using Flutter to keep your to-do list at one place💁‍♀️
+An application build using Flutter to keep your to-do list at one place💁‍♀️
 
 ____
 
